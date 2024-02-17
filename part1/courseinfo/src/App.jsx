@@ -4,7 +4,7 @@ const Header = (props) => {
   )
 }
 
-const Content = (props) => {
+const Part = (props) => {
   return (
     <p>{props.part1} {props.part2}</p>
   )
@@ -28,9 +28,9 @@ const App = () => {
   return (
     <div>
       <Header course={course} />
-      <Content part1={part1} part2={exercises1} />
-      <Content part1={part2} part2={exercises2} />
-      <Content part1={part3} part2={exercises3} />
+      <Part part1={part1} part2={exercises1} />
+      <Part part1={part2} part2={exercises2} />
+      <Part part1={part3} part2={exercises3} />
       <Total count1={exercises1} count2={exercises2} count3={exercises3} />
     </div>
   )
