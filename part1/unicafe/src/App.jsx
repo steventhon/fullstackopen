@@ -18,24 +18,24 @@ const Statistics = ({ good, neutral, bad}) => {
   const all = good + neutral + bad
 
   if (all === 0) {
-    return <Content text="No feedback given" />
+    return <p>No feedback given</p>
   } else {
     return (
       <>
-        <Content text="good" count={good} />
-        <Content text="neutral" count={neutral} />
-        <Content text="bad" count={bad} />
-        <Content text="all" count={all} />
-        <Content text="average" count={(good - bad) / all} />
-        <Content text="positive" count={good / all * 100} end="%" />
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={all} />
+        <StatisticLine text="average" value={(good - bad) / all} />
+        <StatisticLine text="positive" value={good / all * 100} end="%" />
       </>
     )
   }
 }
 
-const Content = (props) => {
+const StatisticLine = (props) => {
   return (
-    <p>{props.text} {props.count} {props.end}</p>
+    <p>{props.text} {props.value} {props.end}</p>
   )
 }
 
