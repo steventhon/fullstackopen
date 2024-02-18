@@ -16,7 +16,7 @@ const Button = (props) => {
 
 const Content = (props) => {
   return (
-    <p>{props.text} {props.count}</p>
+    <p>{props.text} {props.count} {props.end}</p>
   )
 }
 
@@ -25,6 +25,8 @@ const App = () => {
   const [good, setGood] = useState(0)
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
+
+  const all = good + neutral + bad
 
   return (
     <>
@@ -36,6 +38,9 @@ const App = () => {
       <Content text="good" count={good} />
       <Content text="neutral" count={neutral} />
       <Content text="bad" count={bad} />
+      <Content text="all" count={all} />
+      <Content text="average" count={(good - bad) / all} />
+      <Content text="positive" count={good / all * 100} end="%"/>
     </>
   )
 }
