@@ -1,5 +1,9 @@
 import { useState } from 'react'
 
+const Header = (props) => {
+  return <h1>{props.text}</h1>
+}
+
 const Button = (props) => {
   return <button onClick={props.handleClick}>{props.text}</button>
 }
@@ -18,6 +22,11 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [points, setPoints] = useState(new Uint8Array(anecdotes.length))
+  const [max, setMax] = useState(0)
+  const [indexMax, setIndexMax] = useState(0)
+  console.log(points)
+  console.log("max ", max)
+  console.log("indexMax ", indexMax)
 
   const handleNext = () => {
     const random = Math.floor(Math.random() * anecdotes.length)
@@ -26,16 +35,25 @@ const App = () => {
 
   const handleVote = () => {
     const copy = { ...points }
-    copy[selected] += 1
+    const voted = copy[selected] + 1
+    copy[selected] = voted
+    if (voted > max) {
+      setIndexMax(selected)
+      setMax(voted)
+    }
     setPoints(copy)
   }
 
   return (
     <>
+      <Header text="Anecdote of the day"/>
       <p>{anecdotes[selected]}</p>
       <p>has {points[selected]} votes</p>
       <Button handleClick={handleVote} text="vote"/>
       <Button handleClick={handleNext} text="next anecdote" />
+      <Header text="Anecdote with most votes"/>
+      <p>{anecdotes[indexMax]}</p>
+      <p>has {max} votes</p>
     </>
   )
 }
