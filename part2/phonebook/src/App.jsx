@@ -1,5 +1,47 @@
 import { useState } from 'react'
 
+const Filter = (props) => {
+  return (
+    <div>
+    filter shown with 
+      <input
+        value={props.inputValue}
+        onChange={props.inputOnChange}
+      />
+    </div>
+  )
+}
+
+const PersonForm = (props) => {
+  return (
+    <form onSubmit={props.formOnSubmit}>
+      <div>
+        name: 
+      <input
+        value={props.newName}
+        onChange={props.handleNameChange}
+      />
+      </div>
+      <div>
+        number: 
+      <input
+        value={props.newNumber}
+        onChange={props.handleNumberChange}
+      />
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  )
+}
+
+const Persons = ({ persons }) => {
+  return persons.map(person => 
+    <Person key={person.id} person={person} />
+  )
+}
+
 const Person = ({ person }) => {
   return <li>{person.name} {person.number}</li>
 }
@@ -26,7 +68,7 @@ const App = () => {
       const personObject = {
         name: newName,
         number: newNumber,
-        id: person.length + 1,
+        id: persons.length + 1,
       }
     
       setPersons(persons.concat(personObject))
@@ -57,40 +99,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-          filter shown with 
-        <input
-          value={filterName}
-          onChange={handleFilterNameChange}
+      <Filter
+          inputValue={filterName}
+          inputOnChange={handleFilterNameChange}
         />
-        </div>
-      <h2>add a new</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: 
-        <input
-          value={newName}
-          onChange={handleNameChange}
-        />
-        </div>
-        <div>
-          number: 
-        <input
-          value={newNumber}
-          onChange={handleNumberChange}
-        />
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {personsToShow.map(person => 
-          <Person key={person.id} person={person} />
-        )}
-      </ul>
-      <div>debug: {newName} {newNumber}</div>
+      <h3>Add a new</h3>
+      <PersonForm formOnSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
+      <h3>Numbers</h3>
+      <Persons persons={personsToShow} />
     </div>
   )
 }
