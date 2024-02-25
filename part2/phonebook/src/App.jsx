@@ -63,9 +63,9 @@ const App = () => {
     console.log('effect')
     personService
       .getAll()
-      .then(response => {
+      .then(initialPersons => {
         console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(initialPersons)
       })
   }, [])
   console.log('render', persons.length, 'persons')
@@ -82,8 +82,8 @@ const App = () => {
 
       personService
         .create(personObject)
-        .then(response => {
-          setPersons(persons.concat(response.data))
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
         })
@@ -92,8 +92,8 @@ const App = () => {
 
       personService
         .update(person.id, changedPerson)
-        .then(response => {
-          setPersons(persons.map(p => p.id !== person.id ? p : response.data))
+        .then(returnedPerson => {
+          setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
           setNewName('')
           setNewNumber('')
         })
@@ -104,8 +104,8 @@ const App = () => {
     if (window.confirm(`Delete ${person.name} ?`)) {
       personService
         .remove(person.id)
-        .then(response => {
-          setPersons(persons.filter(p => p.id !== person.id ))
+        .then(deletedPerson => {
+          setPersons(persons.filter(p => p.id !== deletedPerson.id))
         })
     }
   }
