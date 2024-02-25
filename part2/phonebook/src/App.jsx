@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import Notification from './components/Notification'
 import personService from './services/persons'
 
 const Filter = (props) => {
@@ -58,6 +58,7 @@ const App = () => {
   const [filterName, setFilterName] = useState('')
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [notificationMessage, setNotificationMessage] = useState('')
   
   useEffect(() => {
     console.log('effect')
@@ -86,6 +87,10 @@ const App = () => {
           setPersons(persons.concat(returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationMessage(`Added ${returnedPerson.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     } else if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
       const changedPerson = { ...person, number: newNumber }
@@ -96,6 +101,10 @@ const App = () => {
           setPersons(persons.map(p => p.id !== person.id ? p : returnedPerson))
           setNewName('')
           setNewNumber('')
+          setNotificationMessage(`Changed ${returnedPerson.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     }
   }
@@ -106,6 +115,10 @@ const App = () => {
         .remove(person.id)
         .then(deletedPerson => {
           setPersons(persons.filter(p => p.id !== deletedPerson.id))
+          setNotificationMessage(`Deleted ${person.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
         })
     }
   }
@@ -132,6 +145,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter
           inputValue={filterName}
           inputOnChange={handleFilterNameChange}
