@@ -59,6 +59,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [notificationMessage, setNotificationMessage] = useState('')
+  const [notificationClass, setNotificationClass] = useState('')
   
   useEffect(() => {
     console.log('effect')
@@ -88,6 +89,7 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNotificationMessage(`Added ${returnedPerson.name}`)
+          setNotificationClass('success')
           setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)
@@ -102,6 +104,15 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setNotificationMessage(`Changed ${returnedPerson.name}`)
+          setNotificationClass('success')
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          setNotificationMessage(`Information of ${newName} has already been removed from server`)
+          setNotificationClass('error')
           setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)
@@ -116,6 +127,15 @@ const App = () => {
         .then(deletedPerson => {
           setPersons(persons.filter(p => p.id !== deletedPerson.id))
           setNotificationMessage(`Deleted ${person.name}`)
+          setNotificationClass('success')
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setPersons(persons.filter(p => p.id !== person.id))
+          setNotificationMessage(`Information of ${newName} has already been removed from server`)
+          setNotificationClass('error')
           setTimeout(() => {
             setNotificationMessage(null)
           }, 5000)
@@ -145,7 +165,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={notificationMessage} />
+      <Notification message={notificationMessage} notificationClass={notificationClass}/>
       <Filter
           inputValue={filterName}
           inputOnChange={handleFilterNameChange}
