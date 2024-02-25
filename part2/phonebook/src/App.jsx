@@ -38,14 +38,19 @@ const PersonForm = (props) => {
   )
 }
 
-const Persons = ({ persons }) => {
+const Persons = ({ persons, handleDelete }) => {
   return persons.map(person => 
-    <Person key={person.id} person={person} />
+    <Person key={person.id} person={person} handleDelete={handleDelete}/>
   )
 }
 
-const Person = ({ person }) => {
-  return <li>{person.name} {person.number}</li>
+const Person = ({ person, handleDelete }) => {
+  return (
+    <li>
+      {person.name} {person.number} 
+      <button onClick={() => handleDelete(person)}>Delete</button>
+    </li>
+  )
 }
 
 const App = () => {
@@ -88,6 +93,16 @@ const App = () => {
     }
   }
 
+  const deletePerson = (person) => {
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService
+        .remove(person.id)
+        .then(response => {
+          setPersons(persons.filter(p => p.id !== person.id ))
+        })
+    }
+  }
+
   const handleFilterNameChange = (event) => {
     console.log(event.target.value)
     setFilterName(event.target.value)
@@ -117,7 +132,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm formOnSubmit={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
       <h3>Numbers</h3>
-      <Persons persons={personsToShow} />
+      <Persons persons={personsToShow} handleDelete={deletePerson}/>
     </div>
   )
 }
